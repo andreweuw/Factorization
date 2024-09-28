@@ -24,6 +24,7 @@ void LU::decompose()
 			std::cout << "Zero pivot, aborting.\n";
 			break;
 		}
+		// These updating of rows can be paralelized 
 		for (size_t j = k + 1; j < rows; j++)
 		{
 			factor = mU(j, k) / pivot;

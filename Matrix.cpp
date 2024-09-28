@@ -1,6 +1,7 @@
 #include "Matrix.h"
 #include <cassert>
 #include <iostream>
+#include "LeibnizDeterminant.h"
 
 using std::ostream;
 
@@ -9,7 +10,7 @@ Matrix::Matrix(size_t rows, size_t cols) : mRows(rows), mCols(cols)
     assert(mRows > 0 && "Number of rows should be greater than zero.");
     assert(mCols > 0 && "Number of columns should be greater than zero.");
 
-    std::cout << "Zero constructor" << std::endl;
+   // std::cout << "Zero constructor" << std::endl;
 
     // Create a vector of vectors and initialize all elements to zero
     mData = std::vector<std::vector<double>>(mRows, std::vector<double>(mCols, 0.0));
@@ -17,7 +18,7 @@ Matrix::Matrix(size_t rows, size_t cols) : mRows(rows), mCols(cols)
 
 Matrix::Matrix(const Matrix& other) : mData(other.mData), mRows(other.mRows), mCols(other.mCols)
 {
-    std::cout << "Copy constructor" << std::endl;
+    //std::cout << "Copy constructor" << std::endl;
 }
 
 Matrix::Matrix(const std::vector<std::vector<double>>& data) : mData(data), mRows(data.size()), mCols(data[0].size()) 
@@ -31,12 +32,12 @@ Matrix::Matrix(const std::vector<std::vector<double>>& data) : mData(data), mRow
         assert(row.size() == mCols && "All rows must have the same number of columns.");
     }
 
-    std::cout << "Data constructor" << std::endl;
+    //std::cout << "Data constructor" << std::endl;
 }
 
 Matrix Matrix::identity(size_t dimension)
 {
-    std::cout << "Identity creator" << std::endl;
+    //std::cout << "Identity creator" << std::endl;
     Matrix identity(dimension, dimension);
     for (size_t i = 0; i < dimension; i++)
     {
@@ -45,11 +46,61 @@ Matrix Matrix::identity(size_t dimension)
     return identity;
 }
 
+double Matrix::determinant() const
+{
+    if (mRows != mCols) {
+        std::cout << "Determinant can only be computed for square matrix.";
+        return std::numeric_limits<double>::max();
+    }
+
+    if (mRows <= 3) {
+        // This is super bad and useless but was a nice excercise
+        // ofcourse, writing the terms out explicitly would be a lot better.
+
+
+        double determinant = 0;    
+        // walk +1 +1 through the matrix
+        size_t count = mRows == 2 ? 1 : 0;
+        int i = 0, j = 0;
+        while (count++ < mCols) {
+            double tmp = 1;
+
+            size_t countt = 0;
+            while (countt++ < mCols) {
+                tmp *= mData[i++][j++%mCols];   
+            }
+            i = 0;
+            j = count;
+            determinant += tmp;
+        }
+
+        j = mCols - 1;
+        count = mRows == 2 ? 1 : 0;
+        while (count++ < mCols) {
+            double tmp = 1;
+            size_t countt = 0;
+            while (countt++ < mCols) {
+                tmp *= mData[i++][j--];
+                if (j == -1)
+                    j = mRows - 1;
+            }
+            i = 0;
+            j = mCols - count -1;
+            determinant -= tmp;
+        }
+
+        return determinant;
+    }
+    else {
+        return LeibnizDeterminant::determinant(*this);
+    }
+}
+
 Matrix Matrix::operator*(const Matrix& other)
 {
     auto thisDimensions = this->dimensions();
     auto otherDimensions = other.dimensions();
-    std::cout << "Multiyply " << thisDimensions.first << "X" << thisDimensions.second << " by " << otherDimensions.first << "X" << otherDimensions.second << std::endl;
+    std::cout << "Multiply " << thisDimensions.first << "X" << thisDimensions.second << " by " << otherDimensions.first << "X" << otherDimensions.second << std::endl;
     assert(thisDimensions.second == otherDimensions.first && "The columns of first matrix have to be the same as rows of the right one.");
 
     Matrix multiplied(thisDimensions.first, otherDimensions.second);
@@ -113,7 +164,7 @@ Matrix& Matrix::operator=(const Matrix& other)
         mRows = other.mRows;
         mCols = other.mCols;
 
-        std::cout << "Copy assignment" << std::endl;
+        //std::cout << "Copy assignment" << std::endl;
     }
     return *this;
 }
