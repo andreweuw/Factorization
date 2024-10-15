@@ -10,15 +10,21 @@ private:
 	size_t mCols;
 
 public:
+	Matrix() = default;
 	Matrix(size_t rows, size_t cols);
-	Matrix(const std::vector<std::vector<double>>& data);
+	explicit Matrix(const std::vector<std::vector<double>>& data);
 	Matrix(const Matrix& other);
+
 	static Matrix identity(size_t dimension);
 	std::pair<size_t, size_t> dimensions() const;
 	double determinant() const;
 
-	Matrix operator*(const Matrix& other);
+	Matrix operator*(const Matrix& other) const;
 	Matrix& operator*=(const Matrix& other);
+	Matrix operator+(const Matrix& other) const;
+	Matrix& operator+=(const Matrix& other);
+	Matrix operator-(const Matrix& other) const;
+	Matrix& operator-=(const Matrix& other);
 	Matrix& operator=(const Matrix& other);
 	double& operator()(size_t row, size_t col);
 	const double& operator()(size_t row, size_t col) const;

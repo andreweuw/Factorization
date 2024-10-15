@@ -10,10 +10,10 @@ private:
     void decompose();
 
 public:
-    LU(const Matrix& A);
+    explicit LU(const Matrix& a);
 
-    std::vector<double> solve(const std::vector<double>& b) const;
+    [[nodiscard]] std::vector<double> solve(const std::vector<double>& b) const;
 
-    double determinant() const;
+    [[nodiscard]] double determinant() const;
 };
 

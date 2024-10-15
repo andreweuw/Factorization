@@ -131,14 +131,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="EigenDecomposition.cpp" />
-    <ClCompile Include="LeibnizDeterminant.cpp" />
+    <ClCompile Include="ExpressionLU.cpp" />
+    <ClCompile Include="ExpressionMatrix.cpp" />
     <ClCompile Include="LU.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Matrix.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EigenDecomposition.h" />
-    <ClInclude Include="LeibnizDeterminant.h" />
+    <ClInclude Include="ExpressionLU.h" />
+    <ClInclude Include="ExpressionMatrix.h" />
     <ClInclude Include="LU.h" />
     <ClInclude Include="Matrix.h" />
   </ItemGroup>
